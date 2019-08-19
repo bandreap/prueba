@@ -8,7 +8,6 @@ package com.pruebas;
 import com.pruebas.conf.Nodo;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -21,7 +20,7 @@ public class arbolBinario {
     private String resPostOrden = "PostOrden ->";
     
     @GET
-    public String crearArbol(@QueryParam("num1") int n1, @QueryParam("num2") int n2){
+    public String crearArbol(){
         String imprimirArbol = "";
         
         Nodo raiz = new Nodo("67");
