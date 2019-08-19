@@ -5,7 +5,11 @@
  */
 package com.pruebas;
 
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
-public class arbolBinarioImpl extends arbolBinario {
+@ApplicationPath("app")
+public class RestConf extends Application {
+
     
 }

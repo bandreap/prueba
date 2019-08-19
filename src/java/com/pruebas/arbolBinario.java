@@ -6,7 +6,9 @@
 package com.pruebas;
 
 import com.pruebas.conf.Nodo;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -14,8 +16,14 @@ import javax.ws.rs.Path;
  */
 @Path("arbolBinario")
 public class arbolBinario {
+    private String resPreOrden = "PreOrden ->";
+    private String resInOrden = "InOrden ->";
+    private String resPostOrden = "PostOrden ->";
     
-    public String crearArbol (){
+    @GET
+    public String crearArbol(@QueryParam("num1") int n1, @QueryParam("num2") int n2){
+        String imprimirArbol = "";
+        
         Nodo raiz = new Nodo("67");
         Nodo nodo2 = new Nodo("39");
         Nodo nodo3 = new Nodo("76");
@@ -33,8 +41,37 @@ public class arbolBinario {
         nodo5.setNodoIzq(new Nodo("83"));
         nodo5.setNodoDer(new Nodo("87"));
         
+        imprimirArbol = preOrden(raiz) + "\n" + inOrden(raiz) + "\n" + postOrden(raiz);
         
-        return null;
+        
+        return String.valueOf(imprimirArbol);
     }
     
+    public String preOrden(Nodo raiz) {
+        if (raiz != null) {
+            resPreOrden = resPreOrden.concat(raiz.getDato() + "-");
+            preOrden(raiz.getNodoIzq());
+            preOrden(raiz.getNodoDer());
+            
+        }
+        return resPreOrden;
+    }
+    
+    public String inOrden(Nodo raiz) {
+        if (raiz != null) {
+            inOrden(raiz.getNodoIzq());
+            resInOrden = resInOrden.concat(raiz.getDato() + "-");
+            inOrden(raiz.getNodoDer());
+        }
+        return resInOrden;
+    }
+    
+    public String postOrden(Nodo raiz) {
+        if (raiz != null) {
+            postOrden(raiz.getNodoIzq());
+            postOrden(raiz.getNodoDer());
+            resPostOrden = resPostOrden.concat(raiz.getDato() + "-");
+        }
+        return resPostOrden;
+    }
 }
