@@ -8,6 +8,7 @@ package com.pruebas;
 import com.pruebas.conf.Nodo;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 
 /**
  *
@@ -20,7 +21,7 @@ public class arbolBinario {
     private String resPostOrden = "PostOrden ->";
     
     @GET
-    public String crearArbol(){
+    public String crearArbol(@QueryParam("nodo1") int n1, @QueryParam("nodo2") int n2){
         String imprimirArbol = "";
         
         Nodo raiz = new Nodo("67");
@@ -40,7 +41,12 @@ public class arbolBinario {
         nodo5.setNodoIzq(new Nodo("83"));
         nodo5.setNodoDer(new Nodo("87"));
         
-        imprimirArbol = preOrden(raiz) + "\n" + inOrden(raiz) + "\n" + postOrden(raiz);
+        Nodo nodoAnt = lca(raiz, n1, n2);
+        
+        imprimirArbol = preOrden(raiz) + "\t" + inOrden(raiz) + "\n" + postOrden(raiz)
+                + "El nodo Antecesor en comun de " + n1 + " y " + n2 + " es " + nodoAnt.getDato();
+        
+        
         
         
         return String.valueOf(imprimirArbol);
@@ -72,5 +78,18 @@ public class arbolBinario {
             resPostOrden = resPostOrden.concat(raiz.getDato() + "-");
         }
         return resPostOrden;
+    }
+    
+    public Nodo lca(Nodo nodoC, int n1, int n2) {
+        if (nodoC == null)
+            return null;
+        
+        if (Integer.parseInt(nodoC.getDato()) > n1 && Integer.parseInt(nodoC.getDato()) > n2)
+            return lca(nodoC.getNodoIzq(), n1, n2);
+        
+        if (Integer.parseInt(nodoC.getDato()) < n1 && Integer.parseInt(nodoC.getDato()) < n2)
+            return lca(nodoC.getNodoDer(), n1, n2);
+        
+        return nodoC;
     }
 }
