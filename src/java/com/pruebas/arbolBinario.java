@@ -19,37 +19,55 @@ public class arbolBinario {
     private String resPreOrden = "PreOrden ->";
     private String resInOrden = "InOrden ->";
     private String resPostOrden = "PostOrden ->";
+    private Nodo raiz;
     
+    public arbolBinario(){
+        raiz = null;
+    }
+        
     @GET
-    public String crearArbol(@QueryParam("nodo1") int n1, @QueryParam("nodo2") int n2){
+    public String crearArbol(@QueryParam("arbol") String arbol, @QueryParam("nodo1") int n1, @QueryParam("nodo2") int n2){
         String imprimirArbol = "";
         
-        Nodo raiz = new Nodo("67");
-        Nodo nodo2 = new Nodo("39");
-        Nodo nodo3 = new Nodo("76");
-
-        raiz.setNodoIzq(nodo2);
-        Nodo nodo4 = new Nodo("28");
-        nodo2.setNodoIzq(nodo4);
-        nodo2.setNodoDer(new Nodo("44"));
-        nodo4.setNodoDer(new Nodo("29"));
+        //String arbol = "67-39-76-28";
+        String datos [] = arbol.split("-");
         
-        raiz.setNodoDer(nodo3);
-        Nodo nodo5 = new Nodo("85");
-        nodo3.setNodoIzq(new Nodo("74"));
-        nodo3.setNodoDer(nodo5);
-        nodo5.setNodoIzq(new Nodo("83"));
-        nodo5.setNodoDer(new Nodo("87"));
+        for (String i : datos) {
+            agregarNodo(i);
+        }
         
         Nodo nodoAnt = lca(raiz, n1, n2);
         
         imprimirArbol = preOrden(raiz) + "\t" + inOrden(raiz) + "\n" + postOrden(raiz)
                 + "El nodo Antecesor en comun de " + n1 + " y " + n2 + " es " + nodoAnt.getDato();
         
-        
-        
-        
         return String.valueOf(imprimirArbol);
+    }
+    
+    public void agregarNodo(String dato){
+        Nodo nuevo = new Nodo(dato);
+        if(raiz == null){
+            raiz = nuevo;
+        } else {
+            Nodo auxiliar=raiz;
+            Nodo padre;
+            while(true){
+                padre=auxiliar;
+                if(Integer.parseInt(dato) < Integer.parseInt(auxiliar.getDato())){
+                    auxiliar=auxiliar.NodoIzq;
+                    if(auxiliar==null){
+                        padre.setNodoIzq(nuevo);
+                        return;
+                    }
+                }else{
+                    auxiliar=auxiliar.NodoDer;
+                    if(auxiliar==null){
+                        padre.setNodoDer(nuevo);
+                        return;
+                    }
+                }
+            }
+        }
     }
     
     public String preOrden(Nodo raiz) {
